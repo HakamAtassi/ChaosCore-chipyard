@@ -154,3 +154,6 @@
 [submodule "generators/rocket-chip"]
 	path = generators/rocket-chip
 	url = https://github.com/HakamAtassi/rocket-chip.git
+[submodule "toolchains/riscv-tools/ChaosCore-riscv-tests"]
+	path = toolchains/riscv-tools/ChaosCore-riscv-tests
+	url = git@github.com:HakamAtassi/ChaosCore-riscv-tests.git
