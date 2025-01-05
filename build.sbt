@@ -114,6 +114,10 @@ lazy val scalaTestSettings =  Seq(
 // Subproject definitions begin
 
 // -- Rocket Chip --
+lazy val chaoscore = (project in file("generators/ChaosCore/hw/chisel"))
+  .dependsOn(rocketchip)
+  .settings(libraryDependencies ++= rocketLibDeps.value)
+  .settings(commonSettings)
 
 lazy val hardfloat = freshProject("hardfloat", file("generators/hardfloat/hardfloat"))
   .settings(chiselSettings)
@@ -148,6 +152,10 @@ lazy val rocketLibDeps = (rocketchip / Keys.libraryDependencies)
 
 // -- Chipyard-managed External Projects --
 
+
+
+
+
 lazy val testchipip = (project in file("generators/testchipip"))
   .dependsOn(rocketchip, rocketchip_blocks)
   .settings(libraryDependencies ++= rocketLibDeps.value)
@@ -157,6 +165,7 @@ lazy val chipyard = (project in file("generators/chipyard"))
   .dependsOn(testchipip, rocketchip, boom, rocketchip_blocks, rocketchip_inclusive_cache,
     dsptools, rocket_dsp_utils,
     gemmini, icenet, tracegen, cva6, nvdla, sodor, ibex, fft_generator,
+    chipyard,
     constellation, mempress, barf, shuttle, caliptra_aes, rerocc,
     compressacc, saturn, ara, firrtl2_bridge, vexiiriscv)
   .settings(libraryDependencies ++= rocketLibDeps.value)
