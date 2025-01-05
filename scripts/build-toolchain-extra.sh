@@ -131,4 +131,11 @@ git submodule update --init toolchains/riscv-tools/riscv-spike-devices
 cd toolchains/riscv-tools/riscv-spike-devices
 make install
 
+
+echo '==>  Pulling ChaosCore-riscv-tests'
+cd $RDIR
+git submodule update --init toolchains/riscv-tools/ChaosCore-riscv-tests
+#cd toolchains/riscv-tools/riscv-spike-devices
+#make install
+
 echo "Extra Toolchain Utilities/Tests Build Complete!"
