@@ -39,6 +39,11 @@ class RV32RocketConfig extends Config(
   new freechips.rocketchip.rocket.WithNHugeCores(1) ++
   new chipyard.config.AbstractConfig)
 
+class RV32DualRocketConfig extends Config(
+  new freechips.rocketchip.rocket.WithRV32 ++            // set RocketTiles to be 32-bit
+  new freechips.rocketchip.rocket.WithNHugeCores(2) ++
+  new chipyard.config.AbstractConfig)
+
 // DOC include start: l1scratchpadrocket
 class ScratchpadOnlyRocketConfig extends Config(
   new chipyard.config.WithL2TLBs(0) ++

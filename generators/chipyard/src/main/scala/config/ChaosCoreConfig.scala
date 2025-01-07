@@ -14,7 +14,7 @@ class ChaosCoreConfig extends Config(
   // INIT CORES //
   ////////////////
 
-  new ChaosCore.WithNChaosCores(1) ++
+  new ChaosCore.WithNChaosCores(2) ++
 
   ////////////////////
   // INIT L2 CACHES //
