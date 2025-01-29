@@ -1,5 +1,5 @@
 // See LICENSE for license details.
-package chipyard.fpga.arty100t
+package chipyard.fpga.ultra96V2
 
 import org.chipsalliance.cde.config._
 import freechips.rocketchip.subsystem._
@@ -24,11 +24,11 @@ class WithNoDesignKey extends Config((site, here, up) => {
 
 // By default, this uses the on-board USB-UART for the TSI-over-UART link
 // The PMODUART HarnessBinder maps the actual UART device to JD pin
-class WithArty100TTweaks(freqMHz: Double = 50) extends Config(
-  new WithArty100TPMODUART ++
-  new WithArty100TUARTTSI ++
-  new WithArty100TDDRTL ++
-  new WithArty100TJTAG ++
+class WithUltra96V2weaks(freqMHz: Double = 50) extends Config(
+  new WithUltra96V2PMODUART ++
+  new WithUltra96V2UARTTSI ++
+  new WithUltra96V2DDRTL ++
+  new WithUltra96V2JTAG ++
   new WithNoDesignKey ++
   new testchipip.tsi.WithUARTTSIClient ++
   new chipyard.harness.WithSerialTLTiedOff ++
@@ -40,24 +40,24 @@ class WithArty100TTweaks(freqMHz: Double = 50) extends Config(
   new freechips.rocketchip.subsystem.WithExtMemSize(BigInt(256) << 20) ++ // 256mb on ARTY
   new freechips.rocketchip.subsystem.WithoutTLMonitors)
 
-class RocketArty100TConfig extends Config(
-  new WithArty100TTweaks ++
+class RocketUltra96V2Config extends Config(
+  new WithUltra96V2Tweaks ++
   new chipyard.config.WithBroadcastManager ++ // no l2
   new chipyard.RocketConfig)
 
-class ChaosCoreArty100TConfig extends Config(
-  new WithArty100TTweaks ++
+class ChaosCoreUltra96V2Config extends Config(
+  new WithUltra96V2Tweaks ++
   new chipyard.config.WithBroadcastManager ++ // no l2
   new chipyard.ChaosCoreConfig)
 
-class NoCoresArty100TConfig extends Config(
-  new WithArty100TTweaks ++
+class NoCoresUltra96V2Config extends Config(
+  new WithUltra96V2Tweaks ++
   new chipyard.config.WithBroadcastManager ++ // no l2
   new chipyard.NoCoresConfig)
 
 // This will fail to close timing above 50 MHz
-class BringupArty100TConfig extends Config(
-  new WithArty100TSerialTLToGPIO ++
-  new WithArty100TTweaks(freqMHz = 50) ++
+class BringupUltra96V2Config extends Config(
+  new WithUltra96V2SerialTLToGPIO ++
+  new WithUltra96V2Tweaks(freqMHz = 50) ++
   new testchipip.serdes.WithSerialTLPHYParams(testchipip.serdes.InternalSyncSerialPhyParams(freqMHz=50)) ++
   new chipyard.ChipBringupHostConfig)

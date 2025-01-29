@@ -4,17 +4,16 @@ import chisel3._
 
 import org.chipsalliance.cde.config.{Config}
 
-class ChaosCoreConfig extends Config(
+class ChaosCoreFPGAConfig extends Config(
 
   new freechips.rocketchip.rocket.WithRV32 ++            // set RocketTiles to be 32-bit
 
-  //new freechips.subsystem.WithoutTLMonitors ++ 
 
   ////////////////
   // INIT CORES //
   ////////////////
 
-  new ChaosCore.WithNChaosCores(2) ++
+  new ChaosCore.WithNChaosCores(1) ++
 
   ////////////////////
   // INIT L2 CACHES //
@@ -28,11 +27,20 @@ class ChaosCoreConfig extends Config(
   // INIT PERIPHIRALS //
   //////////////////////
 
-  new chipyard.config.WithUART(address = 0x10020000, baudrate = 115200) ++
-  new chipyard.config.WithNoUART() ++                                     // so we overwrite the default one
 
+  new chipyard.config.WithNoUART() ++       // Dont use SiFive UART
+  //new chipyard.config.WithNoDebug() ++      // Dont use top level JTAG Debug IO
+  //new testchipip.serdes.WithNoSerialTL ++   // With no output serial TL
+  // new freechips.rocketchip.subsystem.WithoutTLMonitors ++ 
 
-  //new chipyard.config.WithSPI(address = 0x10031000) ++
+  //new freechips.rocketchip.subsystem.WithDefaultMMIOPort() ++             // MPSoC Periphiral domain
+
+  //new chipyard.config.WithUART(address = 0x10020000, baudrate = 115200) ++    
+  new freechips.rocketchip.subsystem.WithCustomMMIOPort (base_addr=0x10000000,  // same as default UART
+                                                          base_size=0x20000000,      // 
+                                                          data_width=64,        //
+                                                          maxXferBytes=16,       // FIXME: no clue what this does
+                                                          id_bits=4) ++         // MPSoC UART
 
 
 
@@ -45,6 +53,51 @@ class ChaosCoreConfig extends Config(
 
 
 // BELOW IS THE DEFINITION OF ABSTRACT CONFIG IN CHIPYARD
+
+
+class ChaosCoreConfig extends Config(
+
+  new freechips.rocketchip.rocket.WithRV32 ++            // set RocketTiles to be 32-bit
+
+
+  ////////////////
+  // INIT CORES //
+  ////////////////
+
+  new ChaosCore.WithNChaosCores(1) ++
+
+  ////////////////////
+  // INIT L2 CACHES //
+  ////////////////////
+
+  new freechips.rocketchip.subsystem.WithInclusiveCache(nWays = 2, capacityKB = 64) ++
+  new freechips.rocketchip.subsystem.WithNBanks(2) ++
+
+
+  //////////////////////
+  // INIT PERIPHIRALS //
+  //////////////////////
+
+
+  new chipyard.config.WithUART(address = 0x10020000, baudrate = 115200) ++    
+  new chipyard.config.WithNoUART() ++ 
+
+
+
+  /////////////////
+  // BASE CONFIG //
+  /////////////////
+
+  new chipyard.config.AbstractConfig)
+
+
+
+// BELOW IS THE DEFINITION OF ABSTRACT CONFIG IN CHIPYARD
+
+
+
+
+
 
 /*
 class AbstractConfig extends Config(
@@ -84,8 +137,6 @@ class AbstractConfig extends Config(
   new chipyard.iobinders.WithExtInterruptIOCells ++
   new chipyard.iobinders.WithChipIdIOCells ++
   new chipyard.iobinders.WithCustomBootPin ++
-  // The "punchthrough" IOBInders below don't generate IOCells, as these interfaces shouldn't really be mapped to ASIC IO
-  // Instead, they directly pass through the DigitalTop ports to ports in the ChipTop
   new chipyard.iobinders.WithI2CPunchthrough ++
   new chipyard.iobinders.WithSPIIOPunchthrough ++
   new chipyard.iobinders.WithAXI4MemPunchthrough ++

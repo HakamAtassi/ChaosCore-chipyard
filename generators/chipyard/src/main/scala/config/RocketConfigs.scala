@@ -8,9 +8,25 @@ import freechips.rocketchip.subsystem.{InCluster}
 // Rocket Configs
 // --------------
 
+class RV32RocketConfig extends Config(
+  new freechips.rocketchip.rocket.WithRV32 ++            // set RocketTiles to be 32-bit
+  new freechips.rocketchip.rocket.WithNHugeCores(1) ++
+  new chipyard.config.AbstractConfig)
+
+class RV32RocketFPGAConfig extends Config(
+  new freechips.rocketchip.rocket.WithRV32 ++            // set RocketTiles to be 32-bit
+  new freechips.rocketchip.rocket.WithNHugeCores(1) ++
+  new freechips.rocketchip.subsystem.WithDefaultMMIOPort() ++             // MPSoC Periphiral domain
+  new chipyard.config.WithNoUART() ++       // Dont use SiFive UART
+  new chipyard.config.WithNoDebug() ++      // Dont use top level JTAG Debug IO
+  new testchipip.serdes.WithNoSerialTL ++   // With no output serial TL
+  new chipyard.config.AbstractConfig)
+
+
 class RocketConfig extends Config(
   new freechips.rocketchip.rocket.WithNHugeCores(1) ++         // single rocket-core
   new chipyard.config.AbstractConfig)
+
 
 class DualRocketConfig extends Config(
   new freechips.rocketchip.rocket.WithNHugeCores(2) ++
@@ -34,10 +50,6 @@ class Cloned64RocketConfig extends Config(
   new freechips.rocketchip.rocket.WithNHugeCores(1) ++            // tile0 is a BigRocket
   new chipyard.config.AbstractConfig)
 
-class RV32RocketConfig extends Config(
-  new freechips.rocketchip.rocket.WithRV32 ++            // set RocketTiles to be 32-bit
-  new freechips.rocketchip.rocket.WithNHugeCores(1) ++
-  new chipyard.config.AbstractConfig)
 
 class RV32DualRocketConfig extends Config(
   new freechips.rocketchip.rocket.WithRV32 ++            // set RocketTiles to be 32-bit
