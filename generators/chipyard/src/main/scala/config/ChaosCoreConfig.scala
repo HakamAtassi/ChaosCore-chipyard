@@ -4,6 +4,9 @@ import chisel3._
 
 import org.chipsalliance.cde.config.{Config}
 
+import freechips.rocketchip.subsystem._
+
+
 class ChaosCoreFPGAConfig extends Config(
 
   new freechips.rocketchip.rocket.WithRV32 ++            // set RocketTiles to be 32-bit
@@ -41,8 +44,9 @@ class ChaosCoreFPGAConfig extends Config(
                                                           data_width=64,        //
                                                           maxXferBytes=16,       // FIXME: no clue what this does
                                                           id_bits=4) ++         // MPSoC UART
+  
 
-
+  //new chipyard.config.WithBootROM(address: BigInt = 0x10000, size: Int = 0x10000, hang: BigInt = 0x10000) ++ 
 
   /////////////////
   // BASE CONFIG //
@@ -73,14 +77,25 @@ class ChaosCoreConfig extends Config(
   new freechips.rocketchip.subsystem.WithInclusiveCache(nWays = 2, capacityKB = 64) ++
   new freechips.rocketchip.subsystem.WithNBanks(2) ++
 
+  new freechips.rocketchip.subsystem.WithCustomMemPort(base_addr = BigInt("40000000", 16), 
+                                                       base_size = BigInt("10000000", 16), 
+                                                       data_width = 64, 
+                                                       maxXferBytes = 16,
+                                                       id_bits = 4) ++
 
+
+  //new testchipip.boot.WithCustomBootPinAltAddr(address=0x40000000L) ++  // set custom boot (DRAM) address
+  new testchipip.boot.WithBootAddrReg(testchipip.boot.BootAddrRegParams(
+    defaultBootAddress = 0x40000000L, // This should be DRAM_BASE
+    bootRegAddress = 0x1000,
+    slaveWhere = PBUS)
+  ) ++
   //////////////////////
   // INIT PERIPHIRALS //
   //////////////////////
 
-
-  new chipyard.config.WithUART(address = 0x10020000, baudrate = 115200) ++    
-  new chipyard.config.WithNoUART() ++ 
+  //new chipyard.config.WithUART(address = 0x10020000, baudrate = 115200) ++    
+  //new chipyard.config.WithNoUART() ++ 
 
 
 
