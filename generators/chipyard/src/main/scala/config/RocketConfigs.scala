@@ -13,16 +13,6 @@ class RV32RocketConfig extends Config(
   new freechips.rocketchip.rocket.WithNHugeCores(1) ++
   new chipyard.config.AbstractConfig)
 
-class RV32RocketFPGAConfig extends Config(
-  new freechips.rocketchip.rocket.WithRV32 ++            // set RocketTiles to be 32-bit
-  new freechips.rocketchip.rocket.WithNHugeCores(1) ++
-  new freechips.rocketchip.subsystem.WithDefaultMMIOPort() ++             // MPSoC Periphiral domain
-  new chipyard.config.WithNoUART() ++       // Dont use SiFive UART
-  new chipyard.config.WithNoDebug() ++      // Dont use top level JTAG Debug IO
-  new testchipip.serdes.WithNoSerialTL ++   // With no output serial TL
-  new chipyard.config.AbstractConfig)
-
-
 
 class RV32RocketFPGAConfig extends Config(
   new freechips.rocketchip.rocket.WithRV32 ++            // set RocketTiles to be 32-bit
@@ -30,24 +20,23 @@ class RV32RocketFPGAConfig extends Config(
   new freechips.rocketchip.subsystem.WithoutTLMonitors ++
   new chipyard.config.WithBroadcastManager ++ // no l2
 
-  new chipyard.config.WithNoUART() ++       // Dont use SiFive UART
-
-  new freechips.rocketchip.subsystem.WithCustomMMIOPort (base_addr=BigInt("F0000000", 16),  // same as default UART
-                                                          base_size=0x10000000,
-                                                          data_width=64,       
-                                                          maxXferBytes=16,     
-                                                          id_bits=4) ++        
+  // set custom MMIO
+  new freechips.rocketchip.subsystem.WithCustomMMIOPort(base_addr=BigInt("F0000000", 16),
+                                                        base_size=0x10000000,
+                                                        data_width=64,       
+                                                        maxXferBytes=16,     
+                                                        id_bits=4) ++        
   
-  new freechips.rocketchip.subsystem.WithCustomMemPort(
-    base_addr = BigInt("40000000", 16), 
-    base_size = BigInt("10000000", 16), 
-    data_width = 64, 
-    maxXferBytes = 16,
-    id_bits = 4, 
-  ) ++
+  // set custom DRAM 
+  new freechips.rocketchip.subsystem.WithCustomMemPort(base_addr = BigInt("40000000", 16), 
+                                                       base_size = BigInt("10000000", 16), 
+                                                       data_width = 64, 
+                                                       maxXferBytes = 16,
+                                                       id_bits = 4) ++
 
+  new chipyard.config.WithNoUART() ++       // Dont use SiFive UART
   new chipyard.config.WithNoDebug() ++      // Dont use top level JTAG Debug IO
-  new testchipip.serdes.WithNoSerialTL ++   // With no output serial TL
+  //new testchipip.serdes.WithNoSerialTL ++   // With no output serial TL
 
   new chipyard.config.AbstractConfig)
 
