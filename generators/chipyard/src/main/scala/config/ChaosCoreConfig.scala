@@ -44,6 +44,13 @@ class ChaosCoreFPGAConfig extends Config(
                                                           data_width=64,        //
                                                           maxXferBytes=16,       // FIXME: no clue what this does
                                                           id_bits=4) ++         // MPSoC UART
+
+
+  new testchipip.boot.WithBootAddrReg(testchipip.boot.BootAddrRegParams(
+    defaultBootAddress = 0x40000000L, // This should be DRAM_BASE
+    bootRegAddress = 0x1000,
+    slaveWhere = PBUS)
+  ) ++
   
 
   //new chipyard.config.WithBootROM(address: BigInt = 0x10000, size: Int = 0x10000, hang: BigInt = 0x10000) ++ 
@@ -84,7 +91,6 @@ class ChaosCoreConfig extends Config(
                                                        id_bits = 4) ++
 
 
-  //new testchipip.boot.WithCustomBootPinAltAddr(address=0x40000000L) ++  // set custom boot (DRAM) address
   new testchipip.boot.WithBootAddrReg(testchipip.boot.BootAddrRegParams(
     defaultBootAddress = 0x40000000L, // This should be DRAM_BASE
     bootRegAddress = 0x1000,

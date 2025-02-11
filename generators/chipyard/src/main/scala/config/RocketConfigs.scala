@@ -4,6 +4,9 @@ import org.chipsalliance.cde.config.{Config}
 import freechips.rocketchip.prci.{AsynchronousCrossing}
 import freechips.rocketchip.subsystem.{InCluster}
 
+
+import freechips.rocketchip.subsystem._
+
 // --------------
 // Rocket Configs
 // --------------
@@ -11,6 +14,22 @@ import freechips.rocketchip.subsystem.{InCluster}
 class RV32RocketConfig extends Config(
   new freechips.rocketchip.rocket.WithRV32 ++            // set RocketTiles to be 32-bit
   new freechips.rocketchip.rocket.WithNHugeCores(1) ++
+
+
+  new freechips.rocketchip.subsystem.WithCustomMemPort(base_addr = BigInt("40000000", 16), 
+                                                       base_size = BigInt("10000000", 16), 
+                                                       data_width = 64, 
+                                                       maxXferBytes = 16,
+                                                       id_bits = 4) ++
+
+
+  new testchipip.boot.WithBootAddrReg(testchipip.boot.BootAddrRegParams(
+    defaultBootAddress = 0x40000000L, 
+    bootRegAddress = 0x1000,
+    slaveWhere = PBUS)
+  ) ++
+
+
   new chipyard.config.AbstractConfig)
 
 
@@ -33,6 +52,13 @@ class RV32RocketFPGAConfig extends Config(
                                                        data_width = 64, 
                                                        maxXferBytes = 16,
                                                        id_bits = 4) ++
+
+
+  new testchipip.boot.WithBootAddrReg(testchipip.boot.BootAddrRegParams(
+    defaultBootAddress = 0x40000000L, // This should be DRAM_BASE
+    bootRegAddress = 0x1000,
+    slaveWhere = PBUS)
+  ) ++
 
   //new chipyard.config.WithNoUART() ++       // Dont use SiFive UART
   //new chipyard.config.WithNoDebug() ++      // Dont use top level JTAG Debug IO
