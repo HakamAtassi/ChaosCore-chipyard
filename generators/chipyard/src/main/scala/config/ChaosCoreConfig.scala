@@ -16,7 +16,7 @@ class ChaosCoreFPGAConfig extends Config(
   // INIT CORES //
   ////////////////
 
-  new ChaosCore.WithNChaosCores(1) ++
+  new ChaosCore.WithNSmallChaosCores(1) ++              // Small = 1 wide, Huge = 4 wide. 
 
   ////////////////////
   // INIT L2 CACHES //
@@ -59,7 +59,8 @@ class ChaosCoreFPGAConfig extends Config(
   // BASE CONFIG //
   /////////////////
 
-  new chipyard.config.AbstractConfig)
+  new chipyard.config.AbstractConfig
+)
 
 
 
@@ -75,7 +76,7 @@ class ChaosCoreConfig extends Config(
   // INIT CORES //
   ////////////////
 
-  new ChaosCore.WithNChaosCores(1) ++
+  new ChaosCore.WithNHugeChaosCores(1) ++ // Small = 1 wide, Huge = 4 wide. 
 
   ////////////////////
   // INIT L2 CACHES //
@@ -109,16 +110,14 @@ class ChaosCoreConfig extends Config(
   // BASE CONFIG //
   /////////////////
 
-  new chipyard.config.AbstractConfig)
+  new chipyard.config.AbstractConfig
+)
+
+
 
 
 
 // BELOW IS THE DEFINITION OF ABSTRACT CONFIG IN CHIPYARD
-
-
-
-
-
 
 /*
 class AbstractConfig extends Config(
