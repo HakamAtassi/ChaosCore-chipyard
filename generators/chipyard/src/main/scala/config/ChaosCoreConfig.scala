@@ -104,6 +104,7 @@ class ChaosCoreConfig extends Config(
   //new chipyard.config.WithUART(address = 0x10020000, baudrate = 115200) ++    
   //new chipyard.config.WithNoUART() ++ 
 
+  new ChaosCore.WithPPM() ++ 
 
 
   /////////////////
