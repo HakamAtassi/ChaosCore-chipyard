@@ -2854,3 +2854,19 @@ package:
     sha256: c558b9cc01d9c1444031bd1ce4b9cff86f9085765f17627a6cd85fc623c8a02b
   category: main
   optional: false
+- name: sdl2
+  version: 2.32.50
+  manager: conda
+  platform: linux-64
+  dependencies: 
+    __glibc: '>=2.17,<3.0.a0'
+    libegl: '>=1.7.0,<2.0a0'
+    libgcc: '>=13'
+    libgl: '>=1.7.0,<2.0a0'
+    libstdcxx: '>=13'
+    sdl3: '>=3.2.4,<4.0a0'
+  url: https://conda.anaconda.org/conda-forge/linux-64/sdl2-2.32.50-h9b8e6db_0.conda
+  hash:
+    md5: 33c7b594dcdcef25a54704714dde417b
+  category: main
+  optional: false

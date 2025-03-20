@@ -45,6 +45,9 @@ dependencies:
     - wget
     - findutils
     - lzop
+    
+    # SDL2
+    - sdl2
 
     - bash-completion
     - ca-certificates

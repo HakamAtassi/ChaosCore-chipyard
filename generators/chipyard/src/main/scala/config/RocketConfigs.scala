@@ -22,8 +22,8 @@ class RV32RocketConfig extends Config(
                                                        maxXferBytes = 16,
                                                        id_bits = 4) ++
 
-
   new ChaosCore.WithPPM() ++ 
+  //new ChaosCore.WithSDL2() ++ 
 
   new testchipip.boot.WithBootAddrReg(testchipip.boot.BootAddrRegParams(
     defaultBootAddress = 0x40000000L, 
