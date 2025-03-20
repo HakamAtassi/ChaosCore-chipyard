@@ -233,3 +233,22 @@ clean-sim:
 
 clean-sim-debug:
 	rm -rf $(model_dir_debug) $(sim_debug)
+
+
+CY_DIR=/home/hakam/Repos/ChaosCore-chipyard
+
+benchmark-rocket:
+# run Sinwave
+	{ time make run-binary-fast CONFIG=RV32RocketConfig BINARY=$(CY_DIR)/toolchains/riscv-tools/ChaosCore-riscv-tests/benchmarks/sin.riscv LOADMEM=1 -j 16 EXTRA_SIM_LDFLAGS=-lSDL2 VERILATOR_THREADS=2 TIMEOUT_CYCLES=0; } 2>&1 | tee rocketchip_sin.txt &
+
+# run Mandelbrot
+	{ time make run-binary-fast CONFIG=RV32RocketConfig BINARY=$(CY_DIR)/toolchains/riscv-tools/ChaosCore-riscv-tests/benchmarks/mandelbrot.riscv LOADMEM=1 -j 16 EXTRA_SIM_LDFLAGS=-lSDL2 VERILATOR_THREADS=2 TIMEOUT_CYCLES=0; } 2>&1 | tee rocketchip_mandelbrot.txt &
+
+# run Dhrystone
+	{ time make run-binary-fast CONFIG=RV32RocketConfig BINARY=$(CY_DIR)/toolchains/riscv-tools/ChaosCore-riscv-tests/benchmarks/dhrystone.riscv LOADMEM=1 -j 16 EXTRA_SIM_LDFLAGS=-lSDL2 VERILATOR_THREADS=2 TIMEOUT_CYCLES=0; } 2>&1 | tee rocketchip_dhrystone.txt &
+
+# run Quicksort
+	{ time make run-binary-fast CONFIG=RV32RocketConfig BINARY=$(CY_DIR)/toolchains/riscv-tools/ChaosCore-riscv-tests/benchmarks/qsort.riscv LOADMEM=1 -j 16 EXTRA_SIM_LDFLAGS=-lSDL2 VERILATOR_THREADS=2 TIMEOUT_CYCLES=0; } 2>&1 | tee rocketchip_quicksort.txt &
+
+# run Median
+	{ time make run-binary-fast CONFIG=RV32RocketConfig BINARY=$(CY_DIR)/toolchains/riscv-tools/ChaosCore-riscv-tests/benchmarks/median.riscv LOADMEM=1 -j 16 EXTRA_SIM_LDFLAGS=-lSDL2 VERILATOR_THREADS=2 TIMEOUT_CYCLES=0; } 2>&1 | tee rocketchip_median.txt &
