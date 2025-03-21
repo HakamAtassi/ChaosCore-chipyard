@@ -30,20 +30,31 @@ class ChaosCoreFPGAConfig extends Config(
   // INIT PERIPHIRALS //
   //////////////////////
 
-
-  new chipyard.config.WithNoUART() ++       // Dont use SiFive UART
+  //new chipyard.config.WithNoUART() ++       // Dont use SiFive UART
   //new chipyard.config.WithNoDebug() ++      // Dont use top level JTAG Debug IO
   //new testchipip.serdes.WithNoSerialTL ++   // With no output serial TL
-  // new freechips.rocketchip.subsystem.WithoutTLMonitors ++ 
+  //new freechips.rocketchip.subsystem.WithoutTLMonitors ++ 
 
   //new freechips.rocketchip.subsystem.WithDefaultMMIOPort() ++             // MPSoC Periphiral domain
-
   //new chipyard.config.WithUART(address = 0x10020000, baudrate = 115200) ++    
-  new freechips.rocketchip.subsystem.WithCustomMMIOPort (base_addr=0x10000000,  // same as default UART
-                                                          base_size=0x20000000,      // 
-                                                          data_width=64,        //
-                                                          maxXferBytes=16,       // FIXME: no clue what this does
-                                                          id_bits=4) ++         // MPSoC UART
+
+  new freechips.rocketchip.subsystem.WithCustomMMIOPort (
+    base_addr = BigInt("FF000000", 16),  // Use a string to ensure correct interpretation
+    base_size = BigInt("00100000", 16),  // Ensure it's interpreted correctly
+    data_width = 64,       
+    maxXferBytes = 8,     
+    id_bits = 4
+  ) ++
+
+
+
+  // custom memory range
+  new freechips.rocketchip.subsystem.WithCustomMemPort(base_addr = BigInt("40000000", 16), 
+                                                       base_size = BigInt("10000000", 16), 
+                                                       data_width = 64, 
+                                                       maxXferBytes = 16,
+                                                       id_bits = 4) ++
+
 
 
   new testchipip.boot.WithBootAddrReg(testchipip.boot.BootAddrRegParams(
@@ -53,7 +64,6 @@ class ChaosCoreFPGAConfig extends Config(
   ) ++
   
 
-  //new chipyard.config.WithBootROM(address: BigInt = 0x10000, size: Int = 0x10000, hang: BigInt = 0x10000) ++ 
 
   /////////////////
   // BASE CONFIG //
@@ -84,6 +94,9 @@ class ChaosCoreConfig extends Config(
 
   new freechips.rocketchip.subsystem.WithInclusiveCache(nWays = 2, capacityKB = 64) ++
   new freechips.rocketchip.subsystem.WithNBanks(2) ++
+
+  
+  new freechips.rocketchip.subsystem.WithDefaultMMIOPort++ //WithNBanks(2) ++
 
   new freechips.rocketchip.subsystem.WithCustomMemPort(base_addr = BigInt("40000000", 16), 
                                                        base_size = BigInt("10000000", 16), 

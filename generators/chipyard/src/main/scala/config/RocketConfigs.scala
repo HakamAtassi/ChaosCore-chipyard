@@ -42,12 +42,23 @@ class RV32RocketFPGAConfig extends Config(
   //new chipyard.config.WithBroadcastManager ++ // no l2
 
   // set custom MMIO
-  //new freechips.rocketchip.subsystem.WithCustomMMIOPort(base_addr=BigInt("F0000000", 16),
-                                                        //base_size=0x10000000,
-                                                        //data_width=64,       
-                                                        //maxXferBytes=16,     
-                                                        //id_bits=4) ++        
-  
+  new chipyard.config.WithNoUART() ++       // Dont use SiFive UART
+  new chipyard.config.WithNoDebug() ++      // Dont use top level JTAG Debug IO
+  new testchipip.serdes.WithNoSerialTL ++   // With no output serial TL
+
+  new chipyard.config.WithNoUART() ++       // Dont use SiFive UART
+  new chipyard.config.WithNoDebug() ++      // Dont use top level JTAG Debug IO
+  new testchipip.serdes.WithNoSerialTL ++   // With no output serial TL
+  new freechips.rocketchip.subsystem.WithoutTLMonitors ++ 
+
+  new freechips.rocketchip.subsystem.WithCustomMMIOPort (
+    base_addr = BigInt("FF000000", 16),  // Use a string to ensure correct interpretation
+    base_size = BigInt("00100000", 16),  // Ensure it's interpreted correctly
+    data_width = 64,       
+    maxXferBytes = 8,     
+    id_bits = 4
+  ) ++
+
   // set custom DRAM 
   new freechips.rocketchip.subsystem.WithCustomMemPort(base_addr = BigInt("40000000", 16), 
                                                        base_size = BigInt("10000000", 16), 
@@ -62,9 +73,6 @@ class RV32RocketFPGAConfig extends Config(
     slaveWhere = PBUS)
   ) ++
 
-  //new chipyard.config.WithNoUART() ++       // Dont use SiFive UART
-  //new chipyard.config.WithNoDebug() ++      // Dont use top level JTAG Debug IO
-  //new testchipip.serdes.WithNoSerialTL ++   // With no output serial TL
 
   new chipyard.config.AbstractConfig)
 
