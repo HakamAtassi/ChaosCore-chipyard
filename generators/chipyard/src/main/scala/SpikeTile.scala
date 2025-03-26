@@ -20,9 +20,9 @@ case class SpikeCoreParams(
   nPMPs: Int = 16,
   useZicntr: Boolean = false
 ) extends CoreParams {
-  val xLen = 64
-  val pgLevels = 5
-  val useVM = true
+  val xLen = 32
+  val pgLevels = 2
+  val useVM = false
   val useHypervisor = false
   val useSupervisor = true
   val useUser = true
@@ -122,7 +122,7 @@ class SpikeTile(
 
   // Note: Rocket doesn't support zicntr but Spike does (err on the side of having Rocket's ISA)
   override def isaDTS = (Seq(
-    "rv64imafdcbv",
+    "rv32imafdcbv",
     "zicsr",
     "zifencei",
     "zihpm",
